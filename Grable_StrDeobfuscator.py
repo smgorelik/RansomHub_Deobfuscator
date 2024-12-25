@@ -13,6 +13,7 @@ import ida_lines
 SIZE_MIN_THRESHOLD = 0x20
 SIZE_MAX_THRESHOLD = 0x400
 LIMIT_NUM_OF_FUNC = 10  # Set to -1 for no limit
+DEBUG_SINGLE_FUNC = 0
 VERBOS = False
 REGISTERS = {
     UC_X86_REG_RAX: "RAX",
@@ -34,6 +35,26 @@ REGISTERS = {
     UC_X86_REG_RIP: "RIP",
 }
 
+reg_map = {
+    "rax": "rax", "eax": "rax", "ax": "rax", "ah": "rax", "al": "rax",
+    "rbx": "rbx", "ebx": "rbx", "bx": "rbx", "bh": "rbx", "bl": "rbx",
+    "rcx": "rcx", "ecx": "rcx", "cx": "rcx", "ch": "rcx", "cl": "rcx",
+    "rdx": "rdx", "edx": "rdx", "dx": "rdx", "dh": "rdx", "dl": "rdx",
+    "rsi": "rsi", "esi": "rsi", "si": "rsi", "sil": "rsi",
+    "rdi": "rdi", "edi": "rdi", "di": "rdi", "dil": "rdi",
+    "rsp": "rsp", "esp": "rsp", "sp": "rsp", "spl": "rsp",
+    "rbp": "rbp", "ebp": "rbp", "bp": "rbp", "bpl": "rbp",
+    "r8": "r8", "r8d": "r8", "r8w": "r8", "r8b": "r8",
+    "r9": "r9", "r9d": "r9", "r9w": "r9", "r9b": "r9",
+    "r10": "r10", "r10d": "r10", "r10w": "r10", "r10b": "r10",
+    "r11": "r11", "r11d": "r11", "r11w": "r11", "r11b": "r11",
+    "r12": "r12", "r12d": "r12", "r12w": "r12", "r12b": "r12",
+    "r13": "r13", "r13d": "r13", "r13w": "r13", "r13b": "r13",
+    "r14": "r14", "r14d": "r14", "r14w": "r14", "r14b": "r14",
+    "r15": "r15", "r15d": "r15", "r15w": "r15", "r15b": "r15",
+}
+
+
 def extract_function_code(func_addr):
     """
     Extracts the function's binary code from IDA Pro.
@@ -53,6 +74,7 @@ def extract_function_code(func_addr):
 
     print(f"Function bytes at {hex(start)} (size {size}): {code.hex()}")
     return code, start, size
+
 
 def create_function_near(addr):
     """
@@ -84,6 +106,7 @@ def create_function_near(addr):
 
     print(f"Alignment instruction not found near {hex(addr)}")
     return None
+
 
 def dump_registers(uc):
     """
@@ -123,6 +146,31 @@ def release_mapped_memory(uc, mapped_regions):
     print_mapped_regions(mapped_regions)
 
 
+def mem_invalid(uc, access, address, size, value, user_data):
+    """
+    Hook to handle invalid memory accesses and provide detailed debugging information.
+    """
+    if access == UC_MEM_FETCH_UNMAPPED:
+        print(f"Invalid memory fetch at {hex(address)}")
+    elif access == UC_MEM_READ_UNMAPPED:
+        print(f"Invalid memory read at {hex(address)}")
+    elif access == UC_MEM_WRITE_UNMAPPED:
+        print(f"Invalid memory write at {hex(address)}")
+
+    # Print mapped regions for debugging
+    mapped_regions = user_data.get("mapped_regions", [])
+    print(f"Mapped regions:")
+    for start, end in mapped_regions:
+        print(f"  {hex(start)} - {hex(end)}")
+
+    uc.emu_stop()
+    return False
+
+
+def hook_memory_write(uc, access, address, size, value, user_data):
+    print(f"Memory WRITE at {hex(address)} (size {size}): Value = {hex(value)}")
+
+
 def map_memory(uc, base, size, prot, mapped_regions):
     """
     Map memory in Unicorn, avoiding overlaps with previously mapped regions.
@@ -157,7 +205,9 @@ def trace(uc, address, size, user_data):
     state = user_data["state"]
     runtime_address = user_data["runtime_address"]
     initialized_registers = state.setdefault("initialized_registers", set())
-
+    initialized_registers.add("rsp")
+    initialized_registers.add("esp")
+    initialized_registers.add("sp")
     try:
         # Read the current instruction bytes
         instruction_bytes = uc.mem_read(address, 16)
@@ -186,7 +236,7 @@ def trace(uc, address, size, user_data):
             state.clear()
 
         # **Validate Source Registers and Memory Operands**
-        if insn.mnemonic in ["mov", "lea", "cmp"]:
+        if insn.mnemonic in ["mov", "lea", "cmp", "movzx", "movabs", "xor"]:
             operands = insn.op_str.split(",")
             if len(operands) > 1:
                 src = operands[1].strip()
@@ -195,9 +245,9 @@ def trace(uc, address, size, user_data):
                 # Check for memory dereference in source operand
                 if "[" in src and "]" in src:
                     # Check if any register is used in the memory operand
-                    if any(reg.lower() in src.lower() for reg in REGISTERS.values()):
+                    if any(reg.lower() in src.lower() for reg in reg_map.keys()):
                         # Validate all registers in the memory operand
-                        for reg in REGISTERS.values():
+                        for reg in reg_map.keys():
                             if reg.lower() in src.lower() and reg not in initialized_registers and reg.lower() not in [
                                 "rsp"]:
                                 if VERBOS: print(
@@ -220,9 +270,32 @@ def trace(uc, address, size, user_data):
                             uc.reg_write(UC_X86_REG_RIP, address + insn.size)
                             return
 
-                # Mark destination register as initialized
-                if dest.startswith("r") and insn.mnemonic not in ["cmp"] and not dest.startswith("rsp"):
+            dest = dest.lower()
+            if dest not in initialized_registers:
+                if dest.startswith("r") and insn.mnemonic not in ["cmp"]:
+                    if dest in ["rax", "rbx", "rcx", "rdx", "rsi", "rdi"]:
+                        initialized_registers.add(dest)
+                        initialized_registers.add("e" + dest[1:])
+                        initialized_registers.add(dest[1:])
+                        if dest in ["rsi", "rdi"]:
+                            initialized_registers.add(dest[1:] + "l")
+                        else:
+                            initialized_registers.add(dest[1] + "l")
+                            initialized_registers.add(dest[1] + "h")
+                    else:
+                        if dest[-1] in ["w", "d", "b"]:
+                            dest = dest[:-1]
+                        initialized_registers.add(dest + "w")
+                        initialized_registers.add(dest + "d")
+                        initialized_registers.add(dest + "b")
+                        initialized_registers.add(dest)
+                    if VERBOS: print(f"Marking destination register '{dest}' as initialized.")
+                if dest.startswith("e") and insn.mnemonic not in ["cmp"]:
                     initialized_registers.add(dest)
+                    initialized_registers.add(dest[1] + "l")
+                    initialized_registers.add(dest[1] + "h")
+                    initialized_registers.add(dest[1:])
+                    initialized_registers.add("r" + dest[1:])
                     if VERBOS: print(f"Marking destination register '{dest}' as initialized.")
 
         # **Handle Call to runtime.slicebytetostring**
@@ -344,6 +417,9 @@ def process_references(target_func_name):
             print(f"Reached function limit: {LIMIT_NUM_OF_FUNC}")
             return
 
+        if DEBUG_SINGLE_FUNC > 0:
+            xref.frm = DEBUG_SINGLE_FUNC
+
         calling_func = ida_funcs.get_func(xref.frm)
         if not calling_func:
             print(f"Undefined function at reference: {hex(xref.frm)}")
@@ -357,7 +433,7 @@ def process_references(target_func_name):
                 print(f"Skipping renamed function: {func_name} at {hex(calling_func.start_ea)}")
                 continue
             func_type = idc.get_type(calling_func.start_ea)
-            if func_type and (func_type.split("(")[1].split(")")[0] is not ''):
+            if func_type and (func_type.split("(")[1].split(")")[0] != ''):
                 print(f"Skipping function with arguments: {func_name} at {hex(calling_func.start_ea)}")
                 continue
             func_size = calling_func.end_ea - calling_func.start_ea
@@ -366,10 +442,12 @@ def process_references(target_func_name):
                 continue
 
             emulate_function(calling_func.start_ea, uc, data_base, mapped_regions, target_func_addr)
-            counter += 1
 
             # Release mapped memory after analyzing the function
             release_mapped_memory(uc, mapped_regions)
+            if DEBUG_SINGLE_FUNC > 0:
+                return
+            counter += 1
 
 
 # Main Execution
