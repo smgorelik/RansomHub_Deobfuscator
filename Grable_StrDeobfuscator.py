@@ -1,6 +1,7 @@
 from unicorn import *
 from unicorn.x86_const import *
 from capstone import *
+from ida_bytes import set_cmt,patch_bytes
 import ida_funcs
 import ida_name
 import ida_ida
@@ -9,11 +10,16 @@ import idautils
 import ida_bytes
 import ida_lines
 
+
 # CONSTANTS
 SIZE_MIN_THRESHOLD = 0x20
 SIZE_MAX_THRESHOLD = 0x400
-LIMIT_NUM_OF_FUNC = 10  # Set to -1 for no limit
+LIMIT_NUM_OF_FUNC = 20  # Set to -1 for no limit
 DEBUG_SINGLE_FUNC = 0
+DECRYPTED_SEGMENT_BASE=None
+SEGMENT_OFFSET=0
+SEGMENT_NAME='DecryptedHub'
+SEGMENT_ADDRESS=set()
 VERBOS = False
 REGISTERS = {
     UC_X86_REG_RAX: "RAX",
@@ -54,6 +60,92 @@ reg_map = {
     "r15": "r15", "r15d": "r15", "r15w": "r15", "r15b": "r15",
 }
 
+def create_decrypted_segment(segment_size=0x10000):
+    """
+    Create a new segment in IDA for storing decrypted strings or return an existing one.
+    """
+    # Check if the segment already exists
+    existing_segment = ida_segment.get_segm_by_name(SEGMENT_NAME)
+    if existing_segment:
+        print(f"Segment '{SEGMENT_NAME}' already exists at {hex(existing_segment.start_ea)}")
+        return existing_segment.start_ea
+
+    # Find the next available address
+    page_size = 0x1000
+    max_ea = 0
+    for i in range(ida_segment.get_segm_qty()):
+        seg = ida_segment.getnseg(i)
+        if seg.end_ea > max_ea:
+            max_ea = seg.end_ea
+
+    # Align the address to the next page boundary
+    next_base = (max_ea + page_size - 1) & ~(page_size - 1)
+    next_end = next_base + segment_size
+
+    # Create the new segment
+    if not ida_segment.add_segm(0, next_base, next_end, SEGMENT_NAME, "DATA"):
+        print(f"Failed to create segment '{SEGMENT_NAME}'!")
+        return None
+
+    print(f"Created segment '{SEGMENT_NAME}' at {hex(next_base)} - {hex(next_end)}")
+    return next_base
+
+def load_written_strings(segment_base):
+    """
+    Parse existing strings in the segment and rebuild the mapping.
+    """
+    segment = ida_segment.get_segm_by_name(SEGMENT_NAME)
+    if not segment:
+        print(f"Segment '{SEGMENT_NAME}' not found.")
+        return {}, 0
+
+    written_mapping = {}  # Maps original_address -> segment_offset
+    current_offset = 0
+    segment_end = segment.end_ea
+
+    while segment_base + current_offset < segment_end:
+        addr = segment_base + current_offset
+        # Read until null terminator
+        data = ida_bytes.get_bytes(addr, segment_end - addr)
+        if not data:
+            break
+
+        null_index = data.find(b'\x00')
+        if null_index == -1:
+            break  # No null terminator found
+
+        # Extract string and metadata
+        string = data[:null_index].decode("utf-8", errors="ignore")
+        metadata_start = null_index + 1
+        metadata_size = 8  # Original address (8 bytes)
+        if metadata_start + metadata_size > len(data):
+            break  # Incomplete metadata
+
+        original_address = int.from_bytes(data[metadata_start:metadata_start + metadata_size], byteorder="little")
+        written_mapping[original_address] = current_offset
+        current_offset += len(string) + 1 + metadata_size
+
+    print(f"Loaded {len(written_mapping)} strings from segment '{SEGMENT_NAME}'")
+    return written_mapping, current_offset
+
+
+
+def create_or_load_segment(segment_size=0x10000):
+    """
+    Create a new segment or load an existing one, and parse its contents.
+    """
+    global SEGMENT_ADDRESS
+    segment_base = create_decrypted_segment(segment_size)
+    written_mapping, current_offset = load_written_strings(segment_base)
+    SEGMENT_ADDRESS = set(written_mapping.keys())  # Populate the global set
+    return segment_base, SEGMENT_ADDRESS, current_offset
+
+def add_comment_to_address(addr, comment):
+    """
+    Add a comment to the given address in IDA.
+    """
+    set_cmt(addr, comment, False)
+    print(f"Added comment at {hex(addr)}: {comment}")
 
 def extract_function_code(func_addr):
     """
@@ -196,11 +288,37 @@ def map_memory(uc, base, size, prot, mapped_regions):
 
     return aligned_base, aligned_size
 
+def write_decrypted_string(segment_base, offset, string, original_address):
+    """
+    Write a string to the segment if it hasn't been written already.
+    """
+    global SEGMENT_ADDRESS
+    addr = segment_base + offset
+
+    # Check if the address has already been written
+    if original_address in SEGMENT_ADDRESS:
+        print(f"Skipping write: Address {hex(original_address)} already contains data.")
+        return None, 0
+
+    # Write the string and metadata
+    string_data = f"{string}\x00".encode("utf-8")  # Null-terminated string
+    metadata = original_address.to_bytes(8, byteorder="little")  # Store original address
+    full_data = string_data + metadata
+
+    patch_bytes(addr, full_data)
+    ida_bytes.create_strlit(addr, len(string_data),get_inf_attr(INF_STRTYPE))
+    ida_bytes.create_dword(addr+len(string_data),4)
+
+    SEGMENT_ADDRESS.add(original_address)
+    print(f"Written: '{string}' at {hex(addr)} (source: {hex(original_address)})")
+
+    return addr, len(full_data)
 
 def trace(uc, address, size, user_data):
     """
     Hook to trace execution, skip specific patterns, validate memory reads, and handle slice function calls.
     """
+    global SEGMENT_OFFSET, DECRYPTED_SEGMENT_BASE, SEGMENT_ADDRESS
     cs = user_data["cs"]
     state = user_data["state"]
     runtime_address = user_data["runtime_address"]
@@ -314,8 +432,18 @@ def trace(uc, address, size, user_data):
                         try:
                             byte_array = uc.mem_read(param1_ptr, param2_size)
                             try:
-                                as_string = byte_array.decode("utf-8")
+                                as_string = byte_array.decode("utf-8", errors="ignore")
                                 print(f"Byte array as string: +++++++{as_string}++++++++")  # Red color output
+                                if DECRYPTED_SEGMENT_BASE:
+                                    decrypted_addr, string_size = write_decrypted_string(
+                                        DECRYPTED_SEGMENT_BASE,
+                                        SEGMENT_OFFSET,
+                                        as_string,
+                                        address,
+                                    )
+                                    if decrypted_addr:
+                                        SEGMENT_OFFSET+=string_size
+                                        add_comment_to_address(address, f"Decrypted: {as_string} (at {hex(decrypted_addr)})")
                             except UnicodeDecodeError:
                                 print(f"Byte array could not be decoded as UTF-8: {byte_array.hex()}")
                         except UcError:
@@ -339,7 +467,7 @@ def emulate_function(func_addr, uc, data_base, mapped_regions, runtime_address):
     """
     code_data = extract_function_code(func_addr)
     if not code_data:
-        return
+        return False
 
     code, target_base, code_size = code_data
     target_size = (code_size + 0x1000 - 1) & ~(0x1000 - 1)
@@ -358,14 +486,14 @@ def emulate_function(func_addr, uc, data_base, mapped_regions, runtime_address):
         uc.mem_write(target_base_aligned + offset, code)
     except UcError as e:
         print(f"Memory mapping failed for code: {e}")
-        return
+        return False
 
     try:
         if VERBOS: print(f"Mapping data section at {hex(data_base)}, size 0x1000")
         map_memory(uc, data_base, 0x1000, UC_PROT_ALL, mapped_regions)
     except UcError as e:
         print(f"Data section mapping failed: {e}")
-        return
+        return False
 
     # Map stack
     stack_base = 0x100000
@@ -376,7 +504,7 @@ def emulate_function(func_addr, uc, data_base, mapped_regions, runtime_address):
         uc.reg_write(UC_X86_REG_RSP, stack_base + stack_size // 2)
     except UcError as e:
         print(f"Stack mapping failed: {e}")
-        return
+        return False
 
     uc.reg_write(UC_X86_REG_RIP, func_addr)
 
@@ -392,9 +520,11 @@ def emulate_function(func_addr, uc, data_base, mapped_regions, runtime_address):
     if VERBOS: print(f"Emulating function at {hex(func_addr)}...")
     try:
         uc.emu_start(func_addr, target_base + code_size)
+        return True
     except UcError as e:
         print(f"Unicorn error during emulation: {e}")
         print(f"Current RIP: {hex(uc.reg_read(UC_X86_REG_RIP))}")
+        return False
 
 
 def process_references(target_func_name):
@@ -428,6 +558,11 @@ def process_references(target_func_name):
                 calling_func = ida_funcs.get_func(new_func_addr)
 
         if calling_func:
+            
+            func_addr = calling_func.start_ea
+            if xref.frm in SEGMENT_ADDRESS:
+                print(f"Skipping already analyzed function at {hex(func_addr)}")
+                continue
             func_name = ida_name.get_name(calling_func.start_ea)
             if not func_name.startswith("sub_"):
                 print(f"Skipping renamed function: {func_name} at {hex(calling_func.start_ea)}")
@@ -441,15 +576,20 @@ def process_references(target_func_name):
                 print(f"Skipping function at {hex(calling_func.start_ea)} (size {func_size:#x}).")
                 continue
 
-            emulate_function(calling_func.start_ea, uc, data_base, mapped_regions, target_func_addr)
+            result = emulate_function(calling_func.start_ea, uc, data_base, mapped_regions, target_func_addr)
 
             # Release mapped memory after analyzing the function
             release_mapped_memory(uc, mapped_regions)
             if DEBUG_SINGLE_FUNC > 0:
                 return
-            counter += 1
+            if result: counter += 1
 
 
 # Main Execution
 if __name__ == "__main__":
+    # Initialize segment and load existing data
+    DECRYPTED_SEGMENT_BASE, SEGMENT_ADDRESS, SEGMENT_OFFSET = create_or_load_segment()
+
+    # Start processing references
     process_references("runtime.slicebytetostring")
+
