@@ -1,0 +1,1304 @@
+ (set GODEBUG=execwait=2 to capture stacks for debugging)
+{ Get-VM | Stop-VM -Force }
+ chunk is too large: 
+ into Go struct field 
+ into Go value of type 
+ of type 
+ of unexported method
+ on zero Value
+ out of range
+ procedure in 
+ too short
+%SystemRoot%\system32\
+(MISSING)
+, required CPU feature
+.in-addr.arpa.
+.localhost
+.WithDeadline(
+.WithValue(type 
+/deletevalue
+/dev/stderr
+/etc/hosts
+/etc/nsswitch.conf
+/etc/resolv.conf
+: cannot parse 
+: day-of-year out of range
+: value of type 
+[:^alpha:]
+[:^cntrl:]
+[:^graph:]
+[:^lower:]
+[:^print:]
+[:^space:]
+[:^xdigit:]
+[:alpha:]
+[:cntrl:]
+[:graph:]
+[:lower:]
+[:space:]
+\.+*?()|[]{}^$
+\\%s\c$\
+\\%s\IPC$
+^[a-zA-Z0-9]+$
+^\\\\[^\\/]+\\[^\\/]+$
+_gateway
+_outbound
+{3E5FC7F9-9A51-4367-9063-A120244FBEC7}
+{Bad CRC} A cyclic redundancy check (CRC) checksum error occurred.
+{Data Overrun} A data overrun error occurred.
+{default}
+{Device Power Is Off} The printer power has been turned off.
+{End of Media} The end of the media was encountered.
+{EXCEPTION} Floating-point division by zero.
+{EXCEPTION} Floating-point invalid operation.
+{EXCEPTION} Floating-point overflow.
+{EXCEPTION} Floating-point stack check.
+{EXCEPTION} Floating-point underflow.
+{EXCEPTION} Integer division by zero.
+{EXCEPTION} Possible deadlock condition.
+{File Not Found} The file %hs does not exist.
+{Media Changed} The media may have changed.
+{Missing System File} The required system file %hs is bad or missing.
+{No Disk} There is no disk in the drive. Insert a disk into drive %hs.
+{No More EAs} No more extended attributes (EAs) were found for the file.
+{Operation Failed} The requested operation was unsuccessful.
+{Out of Paper} The printer is out of paper.
+{Section Too Large} The specified section is too big to map the file.
+<invalid Value>
+<not Stringer>
+0123456789ABCDEFX
+0123456789abcdefx
+0123456789ABCDEFX
+0123456789abcdefx
+0123456789abcdefx
+045d888aeb1cc9119fe808002b104860
+0601021504Z0700
+1.3.6.1.5.5.7.3.1
+127.0.0.1:53
+2.16.840.1.113730.4.1
+20060102150405Z0700
+367abb81-9844-35f1-ad32-98f038001003
+71710533-beba-4937-8319-b5dbef9ccc36
+A callback has requested to bypass native code.
+A cleaner cartridge is present in the tape library.
+A communications failure occurred during an RPC.
+A device parity error on an I/O operation.
+A device that does not exist was specified.
+A device was removed so enumeration must be restarted.
+A domain controller for this domain was not found.
+A generic command executable returned a result that indicates failure.
+A global group cannot have a cross-domain member.
+A global group cannot have a universal group as a member.
+A local group can only be a member of other local groups in the same domain.
+A local group cannot have another cross-domain local group as a member.
+A mandatory group may not be disabled.
+A network data fault occurred.
+A network mask is not valid.
+A new volume has been mounted by a file system.
+A null context handle is passed as an [in] parameter.
+A null reference pointer was passed to the stub.
+A policy cannot contain the same auth method more than once.
+A policy on the log in question prevented the operation from completing.
+A problem could not be solved due to an existing condition. Try again later.
+A read operation failed while converting the volume.
+A requested opened file is not a directory.
+A requested read/write cannot be granted due to a conflicting file lock.
+A specified name string is too long for its intended use.
+A specified privilege does not exist.
+A system shutdown is in progress.
+A target with an incorrect type was specified.
+A user mode unwind is in progress.
+A Win32 process already exists.
+A Windows Server has an incorrect configuration.
+abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ
+AcceptEx
+Access to %1 has been restricted by your Administrator by policy rule %2.
+Access to %1 is monitored by policy rule %2.
+Access to the HTTP proxy is denied.
+ack response too small (<%d bytes)
+AddDllDirectory
+Additional
+additionals
+address already in use
+AdjustTokenPrivileges
+Administrators
+advapi32.dll
+advertise error
+after decimal point in numeric literal
+after object key:value pair
+after top-level value
+alarm clock
+All available importance ordinals are being used in the specified topology.
+AllocateAndInitializeSid
+An addressing error occurred in the RPC server.
+An attempt to lock the eject media mechanism failed.
+An attempt to unload media failed.
+An attempt was made to access the mutex by a process that was not the owner.
+An attempt was made to lower a quota limit below the current usage.
+An attempt was made to use an incorrect table.
+An EA operation failed because the EA set is too large.
+An EA operation failed because the name or EA index is invalid.
+An enumerator is not valid.
+An error was detected between two drivers or within an I/O driver.
+An identity contains two definitions for the same attribute.
+An IKE policy cannot contain an Extended Mode policy.
+An inconsistent state has occurred.
+An incorrect mutex was specified.
+An incorrect number of arguments was specified.
+An incorrect PIN was presented to the smart card.
+An instance already exists with this name on the volume specified.
+An instance of a named pipe cannot be found in the listening state.
+An internal error caused an operation to fail.
+An internal error occurred in the RPC.
+An invalid allocation instance is being referenced.
+An invalid combination of parameters was specified.
+An invalid operation was attempted on an active transport connection.
+An invalid parameter was passed to a C runtime function.
+An invalid parameter was passed to a service or function as the first argument.
+An invalid parameter was passed to a service or function as the third argument.
+An invalid parameter was passed to a service or function.
+An invalid request was sent to the KDC.
+An invalid system service was specified in a system service call.
+An invalid version was specified.
+An object with an incorrect type was specified.
+An operation failed because the disk was full.
+An operation was attempted to a volume after it was dismounted.
+application
+Arab Standard Time
+Arabian Standard Time
+Argentina Standard Time
+argument list too long
+AS_ADMIN
+ASCII_Hex_Digit
+asn1: internal error in parseTagAndLength
+asn1: syntax error: 
+Atlantic Standard Time
+attempting to link in too many shared libraries
+Attempting to log on during an unauthorized time of day for this account.
+Authority
+avx5124fmaps
+avx512bw
+avx512dq
+avx512ifma
+avx512vaes
+avx512vbmi
+avx512vbmi2
+bad address
+bad argSize
+bad file descriptor
+bad font file format
+bad head length: %d
+bad hhea length: %d
+bad indir
+bad maxp length: %d
+bad palette length: 
+bad value for field
+Bahia Standard Time
+Bangladesh Standard Time
+base 128 integer too large
+Bhaiksuki
+BitLocker Drive Encryption cannot enter RAW access mode for this volume.
+BitLocker recovery authentication failed.
+BLAKE2b-512
+BLAKE2s-256
+broken hash context data format
+broken ioctl response format
+broken session setup response format
+broken srv copy chunk response format
+broken tree connect response format
+bufio: invalid use of UnreadRune
+Buginese
+Business rule scripts are disabled for the calling application.
+bytes.Buffer: reader returned negative count from Read
+bytes.Reader.UnreadByte: at beginning of slice
+bytes.Reader.WriteTo: invalid Write count
+Canadian_Aboriginal
+CancelIo
+CancelIoEx
+cannot calculate the length of unknown kind for field 
+cannot determine field offset. Missing required metadata
+cannot exec a shared library directly
+cannot find field name within struct: 
+cannot marshal DNS message
+cannot unmarshal DNS message
+Cape Verde Standard Time
+Caucasian_Albanian
+Cen. Australia Standard Time
+Central America Standard Time
+Central Brazilian Standard Time
+Central European Standard Time
+CertAddCertificateContextToStore
+CertCloseStore
+CertDuplicateCertificateContext
+CertEnumCertificatesInStore
+CertFindExtension
+CertFreeCertificateChain
+CertFreeCertificateContext
+CertGetNameStringW
+CertOpenStore
+CertOpenSystemStoreW
+CfgMgr32.dll
+chacha20: counter overflow
+chacha20: wrong nonce size
+chacha20poly1305: bad nonce length passed to Seal
+chacha20poly1305: invalid buffer overlap
+chacha20poly1305: message authentication failed
+chacha20poly1305: plaintext too large
+ChangeServiceConfig2W
+channel number out of range
+CheckTokenMembership
+Cherokee
+China Standard Time
+cipher: message authentication failed
+ClassCSNET
+ClearCommBreak
+ClearCommError
+CloseHandle
+ClosePseudoConsole
+CloseServiceHandle
+cmap format: % x
+cmd to be executed before encryption
+CoCreateGuid
+CoGetObject
+CoInitializeEx
+Collection or events for the WMI GUID is already enabled.
+complex128
+complex64
+ComputerNameEx
+connectex
+ConnectNamedPipe
+context canceled
+context deadline exceeded
+context.Background
+Control Panel\Desktop
+ControlService
+ConvertSidToStringSidW
+ConvertStringSidToSidW
+Copy protection errorâ€”DVD session key not established.
+Copy protection errorâ€”The region setting of the drive may be permanent.
+Copy protection failure.
+CoTaskMemFree
+CreateDirectoryW
+CreateEventExW
+CreateEventW
+CreateFileW
+CreateHardLinkW
+CreateIoCompletionPort
+CreateJobObjectW
+CreateMutexExW
+CreateMutexW
+CreatePipe
+CreateProcessW
+CreatePseudoConsole
+createService
+CreateServiceW
+CreateSymbolicLinkW
+crypt32.dll
+CryptAcquireCertificatePrivateKey
+CryptAcquireContextW
+CryptDecodeObject
+CryptGenRandom
+crypto/aes: output not full block
+crypto/cipher: invalid buffer overlap
+crypto/cipher: message too large for GCM
+crypto/ecdh: invalid private key
+crypto/ecdh: invalid private key size
+crypto/ecdh: invalid public key
+crypto/md5: invalid hash state size
+crypto/rc4: invalid buffer overlap
+crypto/sha512: invalid hash state identifier
+CryptProtectData
+CryptReleaseContext
+CryptUnprotectData
+Cuba Standard Time
+Cuneiform
+d.nx != 0
+data truncated
+Dateline Standard Time
+Debugger cannot provide a handle.
+Debugger command communication exception.
+Debugger did not handle the exception.
+Debugger received a control break.
+Debugger will reply later.
+December
+default:
+DefaultDomainName
+DefaultPassword
+DefaultUserName
+DefineDosDeviceW
+DeleteFileW
+DeleteVolumeMountPointW
+deque: Front() called when empty
+DestroyEnvironmentBlock
+Devanagari
+DeviceIoControl
+DFS is unavailable on the contacted server.
+directory not empty
+disable network before running
+DisconnectNamedPipe
+disk quota exceeded
+Dives_Akuru
+division by zero
+dns,files
+dnsapi.dll
+DnsNameCompare_W
+DnsQuery_W
+DnsRecordListFree
+Driver %2 has been blocked from loading.
+DuplicateHandle
+DuplicateTokenEx
+Duployan
+dwmapi.dll
+DwmGetWindowAttribute
+DwmSetWindowAttribute
+E. Europe Standard Time
+E. South America Standard Time
+Eastern Standard Time (Mexico)
+Egypt Standard Time
+empty integer
+encountered a cycle via %s
+encrypted flag is not on
+EnumChildWindows
+EnumDependentServicesW
+EnumProcesses
+EnumProcessModules
+EnumProcessModulesEx
+EnumWindows
+EqualSid
+EscapeCommFunction
+Ethiopic
+exceeded max depth
+exec format error
+exec: canceling Cmd
+exec: command with a non-nil Cancel was not created with CommandContext
+exec: killing Cmd
+exec: no command
+exec: not started
+exec: Wait was already called
+exit status 
+ExitProcess
+ExpandEnvironmentStringsW
+expected session id: %v, got %v
+Expected to find PA data for a hint of what etype to use, but it was not found.
+explicit
+explicit tag has no child
+explicit,tag:1
+explorer.exe
+Extender
+Failed to find 
+Failed to load 
+Fiji Standard Time
+File is encrypted and should be opened in Client Side Encryption mode.
+file too large
+final token
+FindClose
+FindFirstChangeNotificationW
+FindFirstFileW
+FindFirstVolumeW
+FindNextChangeNotification
+FindNextFile
+FindNextFileW
+FindResourceW
+FindVolumeClose
+flag %q begins with -
+flate: closed writer
+floating point exception
+FlushFileBuffers
+FlushViewOfFile
+FormatMessageW
+found share:
+FreeAddrInfoW
+FreeEnvironmentStringsW
+FreeLibrary
+freetype/raster: Add2 nsplit too large: 
+freetype: DrawText called with a nil font
+freetype: unsupported TrueType feature: 
+funcargs(
+function not implemented
+Georgian
+Georgian Standard Time
+GetAcceptExSockaddrs
+GetActiveProcessorCount
+GetAdaptersInfo
+GetAddrInfoW
+GetBestInterfaceEx
+GetClassNameW
+GetCommModemStatus
+GetCommTimeouts
+GetComputerNameExW
+GetComputerNameW
+GetConsoleWindow
+GetCurrentDirectoryW
+GetCurrentProcessId
+GetDesktopWindow
+GetDriveTypeW
+GetEnvironmentStringsW
+GetEnvironmentVariableW
+GetExitCodeProcess
+GetFileAttributesExW
+GetFileAttributesW
+GetFileInformationByHandle
+GetFileInformationByHandleEx
+GetFileType
+GetFileVersionInfoSizeW
+GetFileVersionInfoW
+GetFinalPathNameByHandleW
+GetForegroundWindow
+GetFullPathNameW
+GetIfEntry
+GetLastError
+GetLengthSid
+GetLongPathNameW
+GetMaximumProcessorCount
+GetModuleFileNameExW
+GetModuleFileNameW
+GetNamedPipeInfo
+GetNamedSecurityInfoW
+GetOverlappedResult
+getpeername
+GetPriorityClass
+GetProcAddress
+GetProcessId
+GetProcessPreferredUILanguages
+GetProcessShutdownParameters
+GetProcessTimes
+GetProfilesDirectoryW
+getprotobyname
+GetSecurityDescriptorLength
+GetSecurityDescriptorSacl
+GetSecurityInfo
+getservbyname
+GetShellWindow
+GetShortPathNameW
+GetSidSubAuthority
+GetSidSubAuthorityCount
+getsockname
+getsockopt
+GetStartupInfoW
+GetSystemDefaultUILanguage
+GetSystemTimeAsFileTime
+GetSystemTimePreciseAsFileTime
+GetTempPathW
+GetThreadPreferredUILanguages
+GetTickCount64
+GetTokenInformation
+GetUserDefaultUILanguage
+GetUserNameExW
+GetUserProfileDirectoryW
+GetVersion
+GetVolumeInformationW
+GetVolumeNameForVolumeMountPointW
+GetVolumePathNameW
+GetWindowsDirectoryW
+GetWindowThreadProcessId
+GMT Standard Time
+GODEBUG sys/cpu: no value specified for 
+GODEBUG sys/cpu: unknown cpu feature 
+GoString
+Greenwich Standard Time
+Gujarati
+Gunjala_Gondi
+Gurmukhi
+Hanifi_Rohingya
+hash/crc32: invalid hash state size
+hinting: unimplemented SHC instruction
+Hiragana
+host is down
+hostLookupOrder=
+hostname
+i < s.Len
+Ideographic
+IDS_Binary_Operator
+illegal base64 data at input byte 
+illegal seek
+ImpersonateSelf
+in \u hexadecimal character escape
+in exponent of numeric literal
+in literal false (expecting 
+in literal null (expecting 
+in literal true (expecting 
+in numeric literal
+indefinite length found (not DER)
+Indicates that the directory trying to be deleted is not empty.
+Indicates that two revision levels are incompatible.
+Indicates the SECURITY_DESCRIPTOR structure is not valid.
+Indicates the specified procedure address cannot be found in the DLL.
+Indicates the specified resource name cannot be found in the image file.
+Indicates the specified resource type cannot be found in the image file.
+Indicates there are no more LUIDs to allocate.
+infinity
+Inherited
+InitializeProcThreadAttributeList
+Initiator is empty
+input/output error
+InstEmptyWidth
+InstFail
+InstMatch
+InstRuneAny
+insufficient data for resource body length
+Insufficient server resources exist to complete the request.
+internal error
+internal inconsistency
+interrupt
+interrupted system call
+invalid address family
+invalid argument
+invalid argument to Int31n
+Invalid asynchronous RPC call handle for this operation.
+Invalid asynchronous RPC handle.
+invalid base
+invalid boolean
+invalid boolean flag %s: %v
+invalid boolean value %q for -%s: %v
+invalid character 
+invalid cross-device link
+invalid exchange
+invalid image size: 
+invalid IP address
+invalid object identifier
+invalid or incomplete multibyte or wide character
+invalid path
+invalid pointer
+invalid request code
+invalid signature
+invalid slot
+invalid syntax
+invalid transport format
+invalid value %q for flag -%s: %v
+invalid write response
+iphlpapi.dll
+IPsec Dos Protection received an incorrectly formatted packet.
+IPsec Dos Protection unable to lookup state.
+IPsec dropped a clear text packet.
+IPsec dropped a packet due to DOS throttle.
+IPv4 address too long
+IPv4 field has octet with leading zero
+ipv6-icmp
+is a directory
+Israel Standard Time
+ist.
+IsValidSecurityDescriptor
+IsValidSid
+IsWindow
+IsWindowUnicode
+IsWindowVisible
+IsWow64Process
+IsWow64Process2
+It is not possible to create any more miniversions for this stream.
+Join_Control
+Jordan Standard Time
+JSON decoder out of sync - data changing underfoot?
+json: error calling 
+json: invalid number literal %q
+json: Unmarshal(nil 
+json: Unmarshal(nil)
+json: Unmarshal(non-pointer 
+json: unsupported type: 
+json: unsupported value: 
+Kayah_Li
+kern coverage: 0x%04x
+kern version: %d
+kernel32.dll
+key has been revoked
+key has expired
+key was rejected by service
+Kharoshthi
+Khudawadi
+Korea Standard Time
+lame referral
+language: %d
+leafCounts[maxBits][maxBits] != n
+length too large
+level 2 halted
+level 3 reset
+Libya Standard Time
+Line Islands Standard Time
+Linear_A
+Linear_B
+LittleEndian
+LoadLibraryExW
+LoadLibraryW
+LoadResource
+LockFileEx
+LockResource
+log to console
+Logical_Order_Exception
+looking for beginning of object key string
+LookupAccountNameW
+LookupAccountSidW
+LookupPrivilegeValueW
+Mahajani
+MakeAbsoluteSD
+Malayalam
+Manichaean
+marshal not implemented for kind: %s
+MarshalJSON
+Mauritius Standard Time
+Medefaidrin
+Meetei_Mayek
+Mende_Kikakui
+mergeRuneSets odd length []rune
+Meroitic_Hieroglyphs
+MessageBoxW
+methodargs(
+methodFrame
+mismatched local address type
+missing 
+missing address
+missing port in address
+missing required tag data. Expecting key:val
+Module32NextW
+Mongolian
+MoveFileExW
+MoveFileW
+mswsock.dll
+mult128bitPow10: power of 10 is out of range
+MultiByteToWideChar
+multiple cipher algorithms
+multiple hash algorithms
+Myanmar Standard Time
+name flag field
+name offset field
+Namibia Standard Time
+netapi32.dll
+NetApiBufferFree
+NetGetJoinInformation
+NetUserEnum
+New_Tai_Lue
+nil context
+nil resource body
+No action was taken because BitLocker Drive Encryption is in RAW access mode.
+no answer from DNS server
+no buffer space available
+No interfaces have been exported.
+no locks available
+no medium found
+No mode is pinned on the specified VidPN source/target.
+No network adapters are available.
+No network address is available to construct a UUID.
+No PIN was presented to the smart card.
+No principal name was registered.
+no route to host
+No RPCs are active on this thread.
+No smart card is available.
+no such device
+no such host
+no such network interface
+no such process
+non sequence tagged as set
+Noncharacter_Code_Point
+non-empty pointer map passed for non-pointer-size values
+non-empty string
+Norfolk Standard Time
+not a NackResponse
+not available
+Not enough free space remains on the volume to allow encryption.
+Not enough video memory is available to complete the operation.
+not supported by windows
+Nothing to present due to desktop occlusion.
+November
+NtCreateFile
+ntdll.dll
+NtQuerySystemInformation
+NtSetInformationFile
+NtSetInformationProcess
+NTSTATUS 0x%08x
+NumericString contains invalid character
+Nyiakeng_Puachue_Hmong
+Ol_Chiki
+Old_Italic
+Old_Permic
+Old_Persian
+Old_South_Arabian
+omitempty
+Omsk Standard Time
+only encryption local disks
+OpenMutexW
+OpenProcess
+OpenProcessToken
+OpenSCManagerW
+OpenServiceW
+OpenThreadToken
+operation canceled
+operation not permitted
+operation not supported
+operation now in progress
+operation was canceled
+Other_Alphabetic
+Other_ID_Start
+Other_Lowercase
+Other_Math
+owner died
+Pacific SA Standard Time
+Pahawh_Hmong
+Pakistan Standard Time
+panic calling String method on zero %v for flag %s: %v
+Paraguay Standard Time
+ParseFloat
+ParseUint
+parsing/packing of this type isn
+Pattern_Syntax
+payload size %d exceeds max transact size %d
+pclmulqdq
+permission denied
+Phoenician
+PNG
+PowerShell
+powershell.exe
+precomputed stack offset
+Prepended_Concatenation_Mark
+Present happened but ended up into the changed desktop mode.
+printable
+Process32FirstW
+Process32NextW
+protocol driver not attached
+protocol not available
+Psalter_Pahlavi
+psapi.dll
+ptrEncoder.encode should have emptied ptrSeen via defers
+PurgeComm
+QueryInformationJobObject
+QueryServiceConfig2W
+QueryServiceDynamicInformation
+QueryServiceLockStatusW
+QueryServiceStatus
+QueryServiceStatusEx
+questions
+Quotation_Mark
+Qyzylorda Standard Time
+randautoseed
+RCodeFormatError
+RCodeNameError
+RCodeNotImplemented
+RCodeSuccess
+read varint
+ReadConsoleW
+ReadDirectoryChangesW
+read-only file system
+recovered in SMBExecWithHash
+recvfrom
+reflect.Copy
+reflect.MakeSlice: len > cap
+reflect.MakeSlice: negative len
+reflect.Value.Bytes
+reflect.Value.Bytes of non-byte slice
+reflect.Value.Bytes of non-rune slice
+reflect.Value.Float
+reflect.Value.Int
+reflect.Value.Len
+reflect.Value.MapIndex
+reflect.Value.OverflowFloat
+reflect.Value.OverflowInt
+reflect.Value.SetBytes of non-byte slice
+reflect.Value.SetComplex
+reflect.Value.SetFloat
+reflect.Value.Slice: slice of unaddressable array
+reflect: 
+reflect: Bits of non-arithmetic Type 
+reflect: call of 
+reflect: Elem of invalid type 
+reflect: In of non-func type 
+reflect: internal error: invalid method index
+reflect: Key of non-map type 
+reflect: nil type passed to Type.Implements
+reflect: Out of non-func type 
+reflect: slice index out of range
+reflect: slice length out of range in SetLen
+reflectlite.Value.Type
+RegCloseKey
+RegConnectRegistryW
+RegCreateKeyExW
+RegDeleteValueW
+RegEnumKeyExW
+RegEnumValueW
+regexp: Compile(
+RegisterEventSourceW
+RegisterServiceCtrlHandlerExW
+RegLoadMUIStringW
+RegNotifyChangeKeyValue
+RegOpenKeyExW
+RegQueryInfoKeyW
+RegQueryValueExW
+RegSetValueExW
+ReleaseMutex
+remote I/O error
+RemoveDirectoryW
+ReportEventW
+ResetEvent
+ResizePseudoConsole
+response error: %v
+ResumeThread
+RevertToSelf
+RmGetList
+RmJoinSession
+RmRegisterResources
+RmStartSession
+rstrtmgr.dll
+RtlAddFunctionTable
+RtlDefaultNpAcl
+RtlGetCurrentPeb
+RtlGetNtVersionNumbers
+RtlGetVersion
+RtlInitString
+RtlInitUnicodeString
+rune <nil>
+Russia Time Zone 10
+Russian Standard Time
+ryuFtoaFixed32 called with negative prec
+ryuFtoaFixed32 called with prec > 9
+SA Eastern Standard Time
+SA Pacific Standard Time
+safeboot-instance
+Samaritan
+Samoa Standard Time
+secur32.dll
+security
+Security on the log and its containers is inconsistent.
+segmentation fault
+sequence truncated
+server misbehaving
+ServerOut
+services.exe
+SetCommBreak
+SetCommMask
+SetCommState
+SetCommTimeouts
+SetConsoleMode
+SetCurrentDirectoryW
+SetDeadline
+SetDefaultDllDirectories
+SetEndOfFile
+SetEntriesInAclW
+SetErrorMode
+SetFileAttributesW
+SetFilePointer
+SetFileValidData
+SetHandleInformation
+SetInformationJobObject
+SetNamedSecurityInfoW
+SetPriorityClass
+SetSecurityDescriptorControl
+SetSecurityDescriptorOwner
+SetSecurityDescriptorRMControl
+SetSecurityInfo
+setsockopt
+SetStdHandle
+SetThreadToken
+setupapi.dll
+SetupComm
+SetupDiClassNameFromGuidExW
+SetupDiCreateDeviceInfoListExW
+SetupDiEnumDeviceInfo
+SetupDiGetClassInstallParamsW
+SetupDiGetDevicePropertyW
+SetupDiGetDriverInfoDetailW
+SetupDiGetSelectedDevice
+SetupDiOpenDevRegKey
+SetupDiSetSelectedDriverW
+SetVolumeLabelW
+SetVolumeMountPointW
+SHA-512/224
+shell32.dll
+ShellExecuteW
+SHGetKnownFolderPath
+signing required
+Singapore Standard Time
+sizeof(rtype) > 0
+SizeofResource
+skipping Question Type
+SMB2AESCCM
+SMBS2CCipherKey
+SmbSign
+sockaddr
+Soft_Dotted
+SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon
+SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
+Some chain adapters in a linked configuration have not yet been enumerated.
+Some data remains to be sent in the request buffer.
+Sora_Sompeng
+Specified section to flush does not map a data file.
+srmount error
+StartServiceW
+strconv.
+strconv: illegal AppendFloat/FormatFloat bitSize
+strconv: illegal AppendInt/FormatInt base
+StringFromGUID2
+struct contains unexported fields
+structure needs cleaning
+SubscribeServiceChangeNotifications
+Sudan Standard Time
+Syloti_Nagri
+sync/atomic: store of inconsistently typed value into Value
+sync: RUnlock of unlocked RWMutex
+syntax error in pattern
+Syria Standard Time
+System hive size has exceeded its limit.
+SystemParametersInfoW
+SYSTEMROOT
+SYSTEMROOT=
+t.
+t.mcount > 0
+t.xcount > 0
+Tagbanwa
+Tai_Tham
+Taipei Standard Time
+Terminal_Punctuation
+TerminateJobObject
+TerminateProcess
+text file busy
+The action type is not compatible with the sublayer.
+The activation context being deactivated has already been deactivated.
+The address range to unmap is not a mapped view.
+The ALPC message requested is no longer available.
+The ALPC port is closed.
+The application binding data format is invalid.
+The attempt to set the object ID failed because the object already has an ID.
+The attribute syntax specified to the directory service is invalid.
+The authentication level is unknown.
+The authorization service is unknown.
+The backup copy of the metadata is out of date.
+The binding does not contain an entry name.
+The binding does not contain any authentication information.
+The binding handle does not contain all the required information.
+The binding handle is invalid.
+The BitLocker encryption key could not be obtained.
+The byte count is too small.
+The call is allowed for kernel-mode callers only.
+The call is not allowed for the current security association state.
+The call must be made from within an explicit transaction.
+The call timed out while waiting to acquire the transaction lock.
+The callout does not exist.
+The child device presence was not reliably detected.
+The client certificate account mapping is not unique.
+The cluster local node information was not found.
+The cluster network interface already exists.
+The cluster network is already offline.
+The cluster node has been poisoned.
+The cluster node is already up.
+The cluster node is not valid.
+The cluster node is up.
+The context handle changed during a call.
+The context handle does not match any known context handles.
+The cryptographic signature is invalid.
+The data received from the monitor is invalid.
+The debugger continued.
+The delegated trust creation quota of the current user has been exceeded.
+The delegated trust deletion quota of the current user has been exceeded.
+The device has indicated that cleaning is necessary.
+The directory service is busy.
+The directory service is shutting down.
+The display adapter is not linked to any other adapters.
+The displayData.name field cannot be null.
+The driver stack does not match the expected driver model.
+The endpoint format is invalid.
+The endpoint is a duplicate.
+The explicit transaction has been forcibly canceled.
+The file cannot be recovered because there is a handle still open on it.
+The file encryption attempt failed.
+The file must be checked out before saving changes.
+The file system does not extend to the end of the volume.
+The file system is inconsistent. Run the Check Disk utility.
+The file was locked and all users of the file can only read.
+The filter condition does not exist.
+The flat name of the trusted domain already exists in the forest.
+The group member was not found.
+The GUID allocation server is disabled at the moment.
+The GUID allocation server is enabled at the moment.
+The hardware has reported an uncorrectable memory error.
+The implementation is not capable of performing the request.
+The interface is unknown.
+The IO was completed by a filter.
+The IPsec cipher configuration is not compatible with the cipher type.
+The IPsec header and/or trailer in the packet is invalid.
+The IPsec integrity check failed.
+The IPsec queue overflowed.
+The journal entry has been deleted from the journal.
+The KDC reply contained more than one principal name.
+The layer does not exist.
+The layered file system driver for this I/O tag did not handle it when needed.
+The list of low power protocol offloads is full.
+The local machine must be a Kerberos KDC (domain controller) and it is not.
+The log data is corrupt.
+The log is multiplexed; no direct writes to the physical log are allowed.
+The log metadata flush failed.
+The log service encountered a corrupted metadata file.
+The log service encountered a remapped log sector.
+The log service encountered an error when attempting to open a log container.
+The log service encountered an invalid log block.
+The log service user-log marshaling buffers are exhausted.
+The log space is exhausted.
+The manifest file does not begin with the required tag and format information.
+The maximum named pipe instance count has been reached.
+The maximum number of calls is too small.
+The metadata disk region pointer is incorrect.
+The monitor does not support the specified VCP code.
+The multicast list on the network interface is full.
+The mutex is not currently owned.
+The name limit for the network adapter card of the local computer was exceeded.
+The name of an attribute in an identity is not within the legal range.
+The name syntax is invalid.
+The named pipe is not in the connected or closing state.
+The network address family is invalid.
+The network address is invalid.
+The network address used in the request is invalid.
+The network BIOS command limit has been reached.
+The network BIOS session limit was exceeded.
+The network interface aborted the request.
+The network interface cannot process the request because it is being reset.
+The network interface does not support this object identifier.
+The network interface has encountered an internal unrecoverable failure.
+The network is busy.
+The network name was deleted.
+The network path cannot be located.
+The object does not exist.
+The object is referenced by other objects and cannot be deleted.
+The object name is invalid.
+The object UUID was not found.
+The operation requires a nonephemeral log, but the log is ephemeral.
+The operation requires an archive context.
+The packet was received on an IPsec SA whose lifetime has expired.
+The page fault was a demand zero fault.
+The page fault was a transition fault.
+The page fault was satisfied by reading from a secondary storage device.
+The paging file cannot be created on a floppy disk.
+The parameter is incorrect.
+The particular display adapter does not have an associated VidPN manager.
+The passed ACL did not contain the minimum required information.
+The Plug and Play query operation was not successful.
+The policy object is shared and can only be modified at the root.
+The procedure number is out of range.
+The protocol driver %1 is invalid.
+The provided callback is already registered.
+The provider context does not exist.
+The provider does not exist.
+The range could not be added to the range list because of a conflict.
+The redirector is in use and cannot be unloaded.
+The referenced assembly could not be found.
+The remote adapter is not compatible.
+The request is not supported.
+The request was aborted.
+The requested authentication level is not supported.
+The requested certificate does not exist on the smart card.
+The requested key container does not exist on the smart card.
+The requested log size for the file system resource manager is invalid.
+The requested operation can be performed only on a global catalog server.
+The requested print file has been canceled.
+The requested section is not present in the activation context.
+The resource requested is already in use.
+The resume flag to a timer API was ignored.
+The revision number specified in the structure is not supported.
+The RPC failed and did not execute.
+The RPC pipe object has already been closed.
+The RPC pipe object is invalid or corrupt.
+The RPC protocol sequence is invalid.
+The RPC protocol sequence is not supported.
+The RPC server is already listening.
+The RPC was canceled.
+The Security Accounts Manager needs to get the boot password.
+The server received the messages but did not send a reply.
+The session has been canceled.
+The setting is not registered.
+The SID filtering operation removed all SIDs.
+The smart card is blocked.
+The source object
+The specified access control entry (ACE) contains an invalid condition.
+The specified account already exists.
+The specified buffer contains all zeros.
+The specified color basis is invalid.
+The specified disk is not a virtual disk.
+The specified display adapter and all of its state have been reset.
+The specified display adapter handle is invalid.
+The specified domain did not exist.
+The specified event is currently not being audited.
+The specified file is not encrypted.
+The specified gamma ramp is invalid.
+The specified group does not exist.
+The specified hardware profile configuration is invalid.
+The specified local group does not exist.
+The specified medium changer source element contains no media.
+The specified mode is already in the mode set.
+The specified mode-pruning algorithm is invalid.
+The specified monitor descriptor is invalid.
+The specified named pipe is in the closing state.
+The specified named pipe is in the connected state.
+The specified named pipe is in the listening state.
+The specified OID cannot be found.
+The specified pixel format is invalid.
+The specified pixel value access mode is invalid.
+The specified primary surface size is invalid.
+The specified process is part of a job.
+The specified registry key is referenced by a predefined handle.
+The specified request is not a valid operation for the target device.
+The specified section cannot be deleted.
+The specified video present source set is invalid.
+The specified video present target is invalid.
+The specified VidPN is active and cannot be accessed.
+The specified VidPN present path content type is invalid.
+The specified VidPN present path copy protection type is invalid.
+The specified VidPN present path is invalid.
+The specified VidPN source mode set is invalid.
+The specified VidPN topology recommendation reason is invalid.
+The specified visible region size is invalid.
+The specified volume is already mounted.
+The system could not find the volume specified.
+The system is in the process of shutting down.
+The system license has expired. Your logon request is denied.
+The system power state is transitioning from %2 to %3 but could enter %4.
+The system was put into hibernation.
+The system was resumed from hibernation.
+The terminal connection driver %1 was not found in the system path.
+The TPM is disabled.
+The traffic parameters do not match those for the security association context.
+The transport address could not be opened because it already exists.
+The transport connection is now disconnected.
+The transport connection was gracefully closed.
+The transport does not recognize the specified transaction request type.
+The transport had previously responded to a transaction request.
+The transport timed out a request that is waiting for a response.
+The transport-connection attempt was refused by the remote system.
+The type of a token object is inappropriate for its attempted use.
+The type UUID has already been registered.
+The user account has expired.
+The user account password has expired.
+The volume change journal is being deleted.
+The volume change journal is not active.
+The volume is not bound to the system.
+The WMI data item or data block could not be changed.
+The WMI data item or data block is read-only.
+The WMI GUID is no longer available.
+The WMI operation is not supported by the data block or method.
+There are no EFS keys defined for the user.
+There are no more members.
+There is an IP address conflict with another system on the network.
+There is no monitor descriptor data at the specified (offset or size) region.
+There is no transaction metadata on the file.
+There is nothing to unexport.
+This boot application must be restarted.
+This operation cannot be performed in a transaction.
+This operation cannot be performed on the current domain.
+This operation is only allowed for the primary domain controller of the domain.
+This release does not support the format of the obtained monitor descriptor.
+Thread32Next
+Tifinagh
+TileWallpaper
+Time.MarshalBinary: unexpected zone offset
+Time.MarshalText: 
+Time.UnmarshalJSON: input is not a JSON string
+time: bad [0-9]*
+timeBeginPeriod
+timeEndPeriod
+Tokyo Standard Time
+Too many GUIDs were requested from the allocation server at once.
+too many levels of symbolic links
+too many open files
+Too many SIDs have been specified.
+TransmitFile
+truetype: hinting: call stack underflow
+truetype: hinting: division by zero
+truetype: hinting: index out of range
+truetype: hinting: insufficient data
+truetype: hinting: invalid data
+truetype: hinting: point out of range
+truetype: hinting: stack overflow
+truetype: hinting: stack underflow
+truetype: hinting: too many steps
+truetype: hinting: unbalanced FDEF
+truetype: hinting: undefined function
+truetype: hinting: unimplemented twilight point adjustment
+truetype: hinting: unrecognized instruction
+truncated base 128 integer
+truncated sequence
+truncated tag or length
+Turkey Standard Time
+TypeAAAA
+TypeHINFO
+Ugaritic
+unable to acquire the display mode management interface.
+unable to encrypt file: %v
+unable to get cipher stream: %v
+unable to get net share
+unable to get nonce: %v
+unable to hack host
+unable to lock file
+unable to logon user %v
+unable to retrieve service status: %v
+unable to seek %d: %v
+unable to stat file: %v
+unable to walk
+unable to write file context: %v
+underflow
+unexpected bind response
+unexpected character
+unexpected dialect returned
+unexpected map key type
+unexpected method step
+unexpected network: 
+unexpected value step
+unixgram
+unixpacket
+unknown code %d
+unknown Go type
+unknown Go type: %v
+unknown hash value 
+unknown IP protocol specified
+unknown method
+unknown network
+unknown network 
+unknown type kind
+unlock file
+UnlockFileEx
+UnmapViewOfFile
+unpacking Question.Name
+unsafe.Pointer
+unsupported dialect specified
+Unsupported RPC pipe version.
+unsupported: 
+Unwind exception code.
+UpdateProcThreadAttribute
+Usage of %s:
+use of closed file
+user32.dll
+userenv.dll
+value out of range
+Variation_Selector
+VerQueryValueW
+version.dll
+VirtualAlloc
+VirtualFree
+VirtualProtect
+VirtualProtectEx
+VirtualQuery
+VirtualUnlock
+Volume metadata read or write is incomplete.
+W. Mongolia Standard Time
+WaitForMultipleObjects
+WallpaperStyle
+Warang_Citi
+Wednesday
+West Asia Standard Time
+wevtutil
+white folder
+white host
+white language
+WinVerifyTrustEx
+WOW Assertion Error.
+WriteConsoleW
+wrong key size
+wrong medium type
+ws2_32.dll
+WSACleanup
+WSAEnumProtocolsW
+WSAIoctl
+WSALookupServiceBeginW
+WSALookupServiceEnd
+WSALookupServiceNextW
+WSASendTo
+WSAStartup
+wtsapi32.dll
+WTSFreeMemory
+Yakutsk Standard Time
+Z07:00:00
+zero length BIT STRING
+zero length segment
+zlib: invalid compression level: %d
+zlib: invalid dictionary
