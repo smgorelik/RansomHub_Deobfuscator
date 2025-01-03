@@ -31,7 +31,7 @@ An additional file, `emulate_single_slicestring.py`, is included. This script en
 1. Load the `emulate_single_slicestring.py` script into IDA Pro.
 2. Call the function with the following parameters:
    ```python
-   emulate_single_slicestring(start_addr, runtime_addr, max_instructions=0x100)
+   emulate_single_slicestring(start_addr, slice_addr, max_instructions=0x100)
    ```
    - `start_addr`: The address to start emulation from.
    - `runtime_addr`: The address of `runtime.slicebytetostring`.
