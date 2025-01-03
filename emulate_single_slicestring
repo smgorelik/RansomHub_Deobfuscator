@@ -7,7 +7,7 @@ from ida_name import get_name_ea
 from ida_lines import generate_disasm_line
 from ida_bytes import prev_head
 
-def emulate_single_slicestring(start_addr, slice_addr, max_instructions=100):
+def emulate_single_slicestring(start_addr, slice_addr, max_instructions=0x100):
     """
     Emulate execution from the given address until reaching a call to runtime.slicebytetostring
     or executing a maximum number of instructions. Prints the decrypted string if found.
