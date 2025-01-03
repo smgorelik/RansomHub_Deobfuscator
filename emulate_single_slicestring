@@ -1,0 +1,107 @@
+from unicorn import Uc, UC_ARCH_X86, UC_MODE_64
+from unicorn.x86_const import *
+from capstone import Cs, CS_ARCH_X86, CS_MODE_64
+from ida_bytes import get_bytes
+from ida_funcs import get_func
+from ida_name import get_name_ea
+from ida_lines import generate_disasm_line
+from ida_bytes import prev_head
+
+def emulate_single_slicestring(start_addr, slice_addr, max_instructions=100):
+    """
+    Emulate execution from the given address until reaching a call to runtime.slicebytetostring
+    or executing a maximum number of instructions. Prints the decrypted string if found.
+
+    :param start_addr: The address to start emulation from.
+    :param slice_addr: The address of runtime.slicebytetostring.
+    :param max_instructions: Maximum number of instructions to execute before stopping.
+    """
+    # Initialize Unicorn emulator
+    uc = Uc(UC_ARCH_X86, UC_MODE_64)
+    cs = Cs(CS_ARCH_X86, CS_MODE_64)
+    cs.detail = True
+
+    # Setup memory
+    code_base = start_addr & ~0xFFF  # Align to page boundary
+    code_size = 0x2000  # 4KB of code memory
+    stack_base = 0x700000  # Arbitrary stack base
+    stack_size = 0x10000
+
+    try:
+        # Map memory
+        uc.mem_map(code_base, code_size, UC_PROT_ALL)
+        uc.mem_map(stack_base, stack_size, UC_PROT_ALL)
+
+        # Initialize stack memory with zeros
+        uc.mem_write(stack_base, b'\x00' * stack_size)
+
+        # Load code into emulator memory
+        code = get_bytes(code_base, code_size)
+        if not code:
+            print(f"Failed to read bytes at {hex(code_base)}")
+            return
+        uc.mem_write(code_base, code)
+
+        # Setup registers
+        uc.reg_write(UC_X86_REG_RSP, stack_base + stack_size // 2)
+        uc.reg_write(UC_X86_REG_RIP, start_addr)
+
+        instruction_count = 0
+
+        # Emulation hooks
+        def trace_instruction(uc, address, size, user_data):
+            nonlocal instruction_count
+            instruction_count += 1
+            print(instruction_count)
+            if instruction_count > max_instructions:
+                print("Maximum instruction limit reached. Stopping emulation.")
+                uc.emu_stop()
+                return
+
+            try:
+                # Fetch instruction bytes
+                instruction_bytes = uc.mem_read(address, size)
+                for insn in cs.disasm(instruction_bytes, address):
+                    print(f"{address:#x}: {insn.mnemonic} {insn.op_str}")
+
+                    # Check if the instruction is a call to runtime.slicebytetostring
+                    if insn.mnemonic == "call":
+                        target = int(insn.op_str, 16)
+                        if target == slice_addr:
+                            print(f"Reached call to runtime.slicebytetostring at {hex(address)}")
+                            decrypt_string(uc)
+                            uc.emu_stop()
+                            return
+            except Exception as e:
+                print(f"Error disassembling at {hex(address)}: {e}")
+
+        def decrypt_string(uc):
+            """Extract and print the decrypted string from registers and memory."""
+            try:
+                param1_ptr = uc.reg_read(UC_X86_REG_RBX)  # First parameter: pointer to byte array
+                param2_size = uc.reg_read(UC_X86_REG_RCX)  # Second parameter: size of byte array
+                if param2_size > 0:
+                    byte_array = uc.mem_read(param1_ptr, param2_size)
+                    decrypted_string = byte_array.decode("utf-8", errors="ignore")
+                    print(f"Decrypted string: {decrypted_string}")
+                else:
+                    print("Empty string detected.")
+            except Exception as e:
+                print(f"Failed to extract decrypted string: {e}")
+
+        uc.hook_add(UC_HOOK_CODE, trace_instruction)
+
+        # Start emulation
+        print(f"Starting emulation from {hex(start_addr)}")
+        uc.emu_start(start_addr, code_base + code_size)
+
+    except Exception as e:
+        print(f"Emulation error: {e}")
+
+    finally:
+        # Clean up memory mappings
+        try:
+            uc.mem_unmap(code_base, code_size)
+            uc.mem_unmap(stack_base, stack_size)
+        except Exception as e:
+            print(f"Cleanup error: {e}")
