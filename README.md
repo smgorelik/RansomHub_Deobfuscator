@@ -1,7 +1,7 @@
 # Garble Deobfuscation Script for RansomHub
 This repository contains a scripts designed to deobfuscate most Garble-obfuscated Golang code within RansomHub. The script was specifically developed to aid in understanding obfuscated code by providing clarity and insight into its original form.
 
-![](https://github.com/smgorelik/RansomHub_Deobfuscator/edit/main/ungrable.gif)
+![](https://github.com/smgorelik/RansomHub_Deobfuscator/blob/main/ungrable.gif)
 
 ## Features
 - Deobfuscates Garble-obfuscated Golang code.
