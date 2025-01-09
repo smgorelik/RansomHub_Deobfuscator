@@ -7,7 +7,8 @@ from ida_name import get_name_ea
 from ida_lines import generate_disasm_line
 from ida_bytes import prev_head
 
-def emulate_single_slicestring(start_addr, slice_addr, max_instructions=0x100):
+
+def emulate_single_slicestring(start_addr, slicebyte_addr=0, newobject_addr=0, growslice_addr=0, max_instructions=0x200):
     """
     Emulate execution from the given address until reaching a call to runtime.slicebytetostring
     or executing a maximum number of instructions. Prints the decrypted string if found.
@@ -23,18 +24,23 @@ def emulate_single_slicestring(start_addr, slice_addr, max_instructions=0x100):
 
     # Setup memory
     code_base = start_addr & ~0xFFF  # Align to page boundary
-    code_size = 0x2000  # 4KB of code memory
+    code_size = 0x100000  # 4KB of code memory
     stack_base = 0x700000  # Arbitrary stack base
     stack_size = 0x10000
+    runtime_base = 0x500000
+    runtime_size = 0x100000
+    runtime_alloc_size = 0x1000
+    runtime_alloc_ptr = runtime_base
 
     try:
         # Map memory
         uc.mem_map(code_base, code_size, UC_PROT_ALL)
         uc.mem_map(stack_base, stack_size, UC_PROT_ALL)
+        uc.mem_map(runtime_base, runtime_size, UC_PROT_ALL)
 
         # Initialize stack memory with zeros
         uc.mem_write(stack_base, b'\x00' * stack_size)
-
+        uc.mem_write(runtime_base, b'\x00' * runtime_size)
         # Load code into emulator memory
         code = get_bytes(code_base, code_size)
         if not code:
@@ -43,14 +49,19 @@ def emulate_single_slicestring(start_addr, slice_addr, max_instructions=0x100):
         uc.mem_write(code_base, code)
 
         # Setup registers
+        uc.reg_write(UC_X86_REG_R14, stack_base + stack_size - 0x200)
         uc.reg_write(UC_X86_REG_RSP, stack_base + stack_size // 2)
         uc.reg_write(UC_X86_REG_RIP, start_addr)
-
+        print(f"RSP {hex(uc.reg_read(UC_X86_REG_RSP))}")
+        print(f"RSP {hex(uc.reg_read(UC_X86_REG_R14))}")
         instruction_count = 0
+        jmp_condition = 0
 
         # Emulation hooks
         def trace_instruction(uc, address, size, user_data):
             nonlocal instruction_count
+            nonlocal runtime_alloc_ptr
+            nonlocal jmp_condition
             instruction_count += 1
             print(instruction_count)
             if instruction_count > max_instructions:
@@ -65,13 +76,47 @@ def emulate_single_slicestring(start_addr, slice_addr, max_instructions=0x100):
                     print(f"{address:#x}: {insn.mnemonic} {insn.op_str}")
 
                     # Check if the instruction is a call to runtime.slicebytetostring
-                    if insn.mnemonic == "call":
+                    if insn.mnemonic == "call" and insn.operands[0].type == 2:
                         target = int(insn.op_str, 16)
-                        if target == slice_addr:
+                        if target == slicebyte_addr:
                             print(f"Reached call to runtime.slicebytetostring at {hex(address)}")
                             decrypt_string(uc)
                             uc.emu_stop()
                             return
+                        elif target == newobject_addr:
+                            print(f"Reached call to runtime.newobject at {hex(address)} , skipping")
+                            uc.reg_write(UC_X86_REG_RIP, address + insn.size)
+                            uc.reg_write(UC_X86_REG_RAX, runtime_alloc_ptr)
+                            runtime_alloc_ptr += runtime_alloc_size
+                        elif target == growslice_addr:
+                            print(f"Reached call to runtime.growslice at {hex(address)} , skipping")
+                            uc.reg_write(UC_X86_REG_RIP, address + insn.size)
+                            uc.reg_write(UC_X86_REG_RAX, runtime_alloc_ptr)
+                            uc.mem_write(UC_X86_REG_RAX, uc.mem_read(uc.reg_read(UC_X86_REG_RDX), 8))
+                            runtime_alloc_ptr += runtime_alloc_size
+                        else:
+                            print(f"Reached call register {hex(uc.reg_read(UC_X86_REG_RCX))}")
+                            return
+                    elif insn.mnemonic == "cmp":
+                        absolute_address = 0
+                        if insn.operands[1].type == 3 and insn.operands[1].mem.base == UC_X86_REG_RIP:
+                            absolute_address = insn.operands[1].mem.disp
+                        elif insn.operands[0].type == 3 and insn.operands[0].mem.base == UC_X86_REG_RIP:
+                            absolute_address = insn.operands[0].mem.disp
+                        else:
+                            continue
+                        absolute_address += uc.reg_read(UC_X86_REG_RIP)
+                        if absolute_address == 0 or (
+                                absolute_address >= code_base and absolute_address < code_base + code_size): continue
+                        print(
+                            f"absolute cmp RIP detected with address {hex(absolute_address)} outside of code base, skipping instruction")
+                        uc.reg_write(UC_X86_REG_RIP, address + insn.size)
+                        jmp_condition = 1  # skip the jmp condition flag due to skip of cmp
+                    elif insn.mnemonic in ["jbe", "jle", "je", "jne", "jg", "jl", "jnz", "jz"] and jmp_condition == 1:
+                        print("skipping conditional jump due to previous cmp skip")
+                        uc.reg_write(UC_X86_REG_RIP, address + insn.size)
+                        jmp_condition = 0
+
             except Exception as e:
                 print(f"Error disassembling at {hex(address)}: {e}")
 
@@ -103,5 +148,6 @@ def emulate_single_slicestring(start_addr, slice_addr, max_instructions=0x100):
         try:
             uc.mem_unmap(code_base, code_size)
             uc.mem_unmap(stack_base, stack_size)
+            uc.mem_unmap(runtime_base, runtime_size)
         except Exception as e:
             print(f"Cleanup error: {e}")
