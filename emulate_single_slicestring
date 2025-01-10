@@ -6,7 +6,8 @@ from ida_funcs import get_func
 from ida_name import get_name_ea
 from ida_lines import generate_disasm_line
 from ida_bytes import prev_head
-
+import idautils 
+import ida_segment 
 
 def emulate_single_slicestring(start_addr, slicebyte_addr=0, newobject_addr=0, growslice_addr=0, max_instructions=0x200):
     """
@@ -22,6 +23,7 @@ def emulate_single_slicestring(start_addr, slicebyte_addr=0, newobject_addr=0, g
     cs = Cs(CS_ARCH_X86, CS_MODE_64)
     cs.detail = True
 
+
     # Setup memory
     code_base = start_addr & ~0xFFF  # Align to page boundary
     code_size = 0x100000  # 4KB of code memory
@@ -31,29 +33,55 @@ def emulate_single_slicestring(start_addr, slicebyte_addr=0, newobject_addr=0, g
     runtime_size = 0x100000
     runtime_alloc_size = 0x1000
     runtime_alloc_ptr = runtime_base
-
+    
+    max_address=0
+    
+    # Mapping All Segments to Memory
+    for seg in idautils.Segments():
+        segment = ida_segment.getseg(seg)
+        if segment:
+            segment_name = ida_segment.get_segm_name(segment)
+            segment_start = segment.start_ea & ~0xFFF
+            segment_end = segment.end_ea
+            segment_size = (segment_end - segment_start) & ~0xFFF
+            max_address = max(max_address,segment_start+segment_end)
+            if segment_name in [".text"]:                
+                code_base = segment_start
+                code_size = segment_size
+            # Map all segments into memory
+            try:
+                if segment_size > 0:
+                    #print(f"{hex(segment_start)} {hex(segment_size)}") 
+                    uc.mem_map(segment_start, segment_size, UC_PROT_ALL)
+                    codebytes = get_bytes(segment_start, segment_size)
+                    if not codebytes:
+                        print(f"Failed to read bytes at {hex(segment_start)}")
+                        continue
+                    # Copy every segment to memory
+                    uc.mem_write(segment_start, codebytes)
+            except Exception as e:
+                print(f"Emulation error: {e}")
+    
+    max_address = (max_address + 0x10000) & ~0xFFF
+    stack_base = max_address
+    #print(f"stack base {hex(stack_base)} {hex(stack_size)}") 
+    runtime_base = (stack_base + stack_size + 0x10000) & ~0xFFF
+    #print(f"heap base {hex(runtime_base)} {hex(runtime_size)}") 
     try:
-        # Map memory
-        uc.mem_map(code_base, code_size, UC_PROT_ALL)
+        # Map stack and runtime heap        
         uc.mem_map(stack_base, stack_size, UC_PROT_ALL)
         uc.mem_map(runtime_base, runtime_size, UC_PROT_ALL)
 
         # Initialize stack memory with zeros
         uc.mem_write(stack_base, b'\x00' * stack_size)
         uc.mem_write(runtime_base, b'\x00' * runtime_size)
-        # Load code into emulator memory
-        code = get_bytes(code_base, code_size)
-        if not code:
-            print(f"Failed to read bytes at {hex(code_base)}")
-            return
-        uc.mem_write(code_base, code)
 
         # Setup registers
         uc.reg_write(UC_X86_REG_R14, stack_base + stack_size - 0x200)
         uc.reg_write(UC_X86_REG_RSP, stack_base + stack_size // 2)
         uc.reg_write(UC_X86_REG_RIP, start_addr)
-        print(f"RSP {hex(uc.reg_read(UC_X86_REG_RSP))}")
-        print(f"RSP {hex(uc.reg_read(UC_X86_REG_R14))}")
+        #print(f"RSP {hex(uc.reg_read(UC_X86_REG_RSP))}")
+        #print(f"RSP {hex(uc.reg_read(UC_X86_REG_R14))}")
         instruction_count = 0
         jmp_condition = 0
 
@@ -146,7 +174,15 @@ def emulate_single_slicestring(start_addr, slicebyte_addr=0, newobject_addr=0, g
     finally:
         # Clean up memory mappings
         try:
-            uc.mem_unmap(code_base, code_size)
+            for seg in idautils.Segments():
+                segment = ida_segment.getseg(seg)
+                if segment:
+                    segment_start = segment.start_ea & ~0xFFF
+                    segment_end = segment.end_ea
+                    segment_size = (segment_end - segment_start) & ~0xFFF
+                    # UnMap all segments from memory
+                    if segment_size > 0:
+                        uc.mem_unmap(segment_start, segment_size)
             uc.mem_unmap(stack_base, stack_size)
             uc.mem_unmap(runtime_base, runtime_size)
         except Exception as e:
