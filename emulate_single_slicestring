@@ -1,6 +1,6 @@
-from unicorn import Uc, UC_ARCH_X86, UC_MODE_64
+from unicorn import *
 from unicorn.x86_const import *
-from capstone import Cs, CS_ARCH_X86, CS_MODE_64
+from capstone import *
 from ida_bytes import get_bytes
 from ida_funcs import get_func
 from ida_name import get_name_ea
