@@ -6,10 +6,12 @@ from ida_funcs import get_func
 from ida_name import get_name_ea
 from ida_lines import generate_disasm_line
 from ida_bytes import prev_head
-import idautils 
-import ida_segment 
+import idautils
+import ida_segment
 
-def emulate_single_slicestring(start_addr, slicebyte_addr=0, newobject_addr=0, growslice_addr=0, max_instructions=0x200):
+
+def emulate_single_slicestring(start_addr, slicebyte_addr=0, newobject_addr=0, growslice_addr=0,
+                               max_instructions=0x200):
     """
     Emulate execution from the given address until reaching a call to runtime.slicebytetostring
     or executing a maximum number of instructions. Prints the decrypted string if found.
@@ -23,7 +25,6 @@ def emulate_single_slicestring(start_addr, slicebyte_addr=0, newobject_addr=0, g
     cs = Cs(CS_ARCH_X86, CS_MODE_64)
     cs.detail = True
 
-
     # Setup memory
     code_base = start_addr & ~0xFFF  # Align to page boundary
     code_size = 0x100000  # 4KB of code memory
@@ -32,10 +33,9 @@ def emulate_single_slicestring(start_addr, slicebyte_addr=0, newobject_addr=0, g
     runtime_base = 0x500000
     runtime_size = 0x100000
     runtime_alloc_size = 0x1000
-    runtime_alloc_ptr = runtime_base
-    
-    max_address=0
-    
+
+    max_address = 0
+
     # Mapping All Segments to Memory
     for seg in idautils.Segments():
         segment = ida_segment.getseg(seg)
@@ -44,14 +44,14 @@ def emulate_single_slicestring(start_addr, slicebyte_addr=0, newobject_addr=0, g
             segment_start = segment.start_ea & ~0xFFF
             segment_end = segment.end_ea
             segment_size = (segment_end - segment_start) & ~0xFFF
-            max_address = max(max_address,segment_start+segment_end)
-            if segment_name in [".text"]:                
+            max_address = max(max_address, segment_start + segment_end)
+            if segment_name in [".text"]:
                 code_base = segment_start
                 code_size = segment_size
             # Map all segments into memory
             try:
                 if segment_size > 0:
-                    #print(f"{hex(segment_start)} {hex(segment_size)}") 
+                    # print(f"{hex(segment_start)} {hex(segment_size)}")
                     uc.mem_map(segment_start, segment_size, UC_PROT_ALL)
                     codebytes = get_bytes(segment_start, segment_size)
                     if not codebytes:
@@ -61,14 +61,15 @@ def emulate_single_slicestring(start_addr, slicebyte_addr=0, newobject_addr=0, g
                     uc.mem_write(segment_start, codebytes)
             except Exception as e:
                 print(f"Emulation error: {e}")
-    
+
     max_address = (max_address + 0x10000) & ~0xFFF
     stack_base = max_address
-    #print(f"stack base {hex(stack_base)} {hex(stack_size)}") 
+    # print(f"stack base {hex(stack_base)} {hex(stack_size)}")
     runtime_base = (stack_base + stack_size + 0x10000) & ~0xFFF
-    #print(f"heap base {hex(runtime_base)} {hex(runtime_size)}") 
+    # print(f"heap base {hex(runtime_base)} {hex(runtime_size)}")
+    runtime_alloc_ptr = runtime_base
     try:
-        # Map stack and runtime heap        
+        # Map stack and runtime heap
         uc.mem_map(stack_base, stack_size, UC_PROT_ALL)
         uc.mem_map(runtime_base, runtime_size, UC_PROT_ALL)
 
@@ -80,8 +81,8 @@ def emulate_single_slicestring(start_addr, slicebyte_addr=0, newobject_addr=0, g
         uc.reg_write(UC_X86_REG_R14, stack_base + stack_size - 0x200)
         uc.reg_write(UC_X86_REG_RSP, stack_base + stack_size // 2)
         uc.reg_write(UC_X86_REG_RIP, start_addr)
-        #print(f"RSP {hex(uc.reg_read(UC_X86_REG_RSP))}")
-        #print(f"RSP {hex(uc.reg_read(UC_X86_REG_R14))}")
+        # print(f"RSP {hex(uc.reg_read(UC_X86_REG_RSP))}")
+        # print(f"RSP {hex(uc.reg_read(UC_X86_REG_R14))}")
         instruction_count = 0
         jmp_condition = 0
 
